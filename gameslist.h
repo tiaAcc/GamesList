@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QWidget>
 
 
 class GamesList : public QMainWindow
@@ -11,7 +12,7 @@ class GamesList : public QMainWindow
 Q_OBJECT
 
 public:
-    GamesList(QWidget *parent = 0);
+    GamesList(QWidget *parent = nullptr);
 };
 
 #endif // GAMESLIST_H
