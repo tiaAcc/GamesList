@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QWidget>
+#include <QListWidget>
 
 
 class GamesList : public QMainWindow

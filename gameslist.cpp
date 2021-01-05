@@ -6,6 +6,10 @@
 #include <QHBoxLayout>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QLabel>
+#include <QLineEdit>
+#include <QFormLayout>
+#include <QString>
 
 
 GamesList::GamesList(QWidget* parent) : QMainWindow(parent)
@@ -13,7 +17,6 @@ GamesList::GamesList(QWidget* parent) : QMainWindow(parent)
     QAction *quit = new QAction("&Quit", this);
     QAction *open = new QAction("&Open", this);
     QAction *newFile = new QAction("&New File", this);
-
 
     quit->setShortcut(tr("CTRL+Q"));
     open->setShortcut(tr("CTRL+O"));
@@ -27,38 +30,59 @@ GamesList::GamesList(QWidget* parent) : QMainWindow(parent)
     file->addSeparator();
     file->addAction(quit);      // adding a program exit button
 
-    QFrame *basic_frame = new QFrame(this);
-    QFrame *frame_up = new QFrame(basic_frame);
-    frame_up->setLineWidth(3);
-    frame_up->setFrameShape(QFrame::Box);
-    frame_up->setFrameShadow(QFrame::Sunken);
-    QFrame *frame_down = new QFrame(basic_frame);
-    frame_down->setLineWidth(3);
-    frame_down->setFrameShape(QFrame::Box);
-    frame_down->setFrameShadow(QFrame::Sunken);
+    QFrame *frame = new QFrame(this);
 
-    setCentralWidget(basic_frame);
+    setCentralWidget(frame);
 
+    QVBoxLayout *vbox = new QVBoxLayout(frame);
+    QVBoxLayout *vboxDown = new QVBoxLayout();
 
-    QVBoxLayout *vbox = new QVBoxLayout(basic_frame);
+// Пробуем создать пользовательский QListWigetItem
+/*
+    QHBoxLayout *itemLayout = new QHBoxLayout();
+    itemLayout->setSpacing(2);
+
+    QLabel *ng = new QLabel("Game");
+    QLabel *val = new QLabel("Value");
+    QLabel *fin = new QLabel("finished");
+
+    itemLayout->addWidget(ng);
+    itemLayout->addWidget(val);
+    itemLayout->addWidget(fin);
+
+*/
+
     vbox->setSpacing(5);
-    QVBoxLayout *vbox_up = new QVBoxLayout(frame_up);
-    vbox_up->setSpacing(2);
-    QVBoxLayout *vbox_down = new QVBoxLayout(frame_down);
-    vbox_up->setSpacing(2);
-
-    QTextEdit *tedit = new QTextEdit(frame_up);
-    QPushButton *btn = new QPushButton("Test", frame_down);
+    vboxDown->setSpacing(5);
 
 
-    vbox->addWidget(frame_up);
-    vbox->addSpacing(5);
-    vbox->addWidget(frame_down);
-    vbox_up->addWidget(tedit);
-    vbox_down->addWidget(btn);
+    QListWidget *gameList = new QListWidget(frame);
 
+    gameList->addItem("Doom");
+    gameList->addItem("Cyberpunk 2077");
+    gameList->addItem("The last of us 2");
+
+    QPushButton *AddGameBtn = new QPushButton("Add", frame);
+
+    QLineEdit *GameName = new QLineEdit(frame);
+    GameName->setFixedWidth(300);
+    QLineEdit *Value = new QLineEdit(frame);
+    Value->setFixedWidth(300);
+
+    QFormLayout *formLayout = new QFormLayout();
+    formLayout->setLabelAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    formLayout->addRow("Name of a game:", GameName);
+    formLayout->addRow("Value:", Value);
+
+    vboxDown->addLayout(formLayout);
+    vboxDown->addWidget(AddGameBtn);
+    vboxDown->setAlignment(AddGameBtn ,Qt::AlignLeft);
+
+    vbox->addSpacing(3);
+    vbox->addWidget(gameList);
+    vbox->addSpacing(20);
+    vbox->addLayout(vboxDown);
 
     connect(quit, &QAction::triggered, qApp, &QApplication::quit); // Выход из программы
     connect(open, &QAction::triggered, qApp, &QApplication::beep); // Заглушка под открытие базы данных
-
 }
